@@ -106,6 +106,22 @@ def save_memory(user_input,final_response,memory):
 
 
 
+def show_memory(memory):
+
+    if memory==[]:
+        print("Aucun échange en mémoire")
+        return   
+    for exchange in memory:
+        print( " Utilisateur......: " + exchange["user"])
+        print("Assistant ......: " + exchange["assistant"])
+
+    
+
+
+
+
+
+
 
 while True:
     
@@ -116,7 +132,7 @@ while True:
          break
 
     if user_input.lower().strip() == "memory":
-            print(memory)
+            show_memory(memory)
             continue
 
   
