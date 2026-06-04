@@ -117,7 +117,11 @@ def show_memory(memory):
 
     
 
-
+def clear_memory(memory):
+    memory.clear()
+    with open("memory.json", "w") as file:
+      json.dump(memory,file)
+  
 
 
 
@@ -133,6 +137,9 @@ while True:
 
     if user_input.lower().strip() == "memory":
             show_memory(memory)
+            continue
+    if user_input.lower().strip()== "clear_memory":
+            clear_memory(memory)
             continue
 
   
