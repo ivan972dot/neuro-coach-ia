@@ -41,23 +41,45 @@ def left_agent(user_input):
 def right_agent(user_input):
 
     clean_input = user_input.lower().strip()
+    causal_patterns = {
+        "blocage" :{
+            "keywords":["bloque", "difficulté", "comprend pas" ],
+            "analysis": "Le  blocage peut venir d'une difficulté trop élévéé."
+        },
 
-    analysis= f"analyse causale: l'utilisateur dit {user_input}"
+        "fatigue" :{
+            "keywords": ["fatigue","épuisé", "crevé"],
+            "analysis": "La fatigue peut réduire la concentration."
+        },
+
+        "motivation" :{
+            "keywords": ["motivation basse", "pas motivé", "motivation"],
+            "analysis":"La baisse de motivation peut venir d'un objectif trop grand ou un manque de victoire rapide."
+        },
+
+        "stress" :{
+            "keywords": [" stressé","angoissé","tendu", " nerveux"],
+            "analysis":"Le stress peut venir d'une surcharge mentale ou d'une pression forte."
+
+        },
+        "peur" :{
+            "keywords": ["peur"," échouer", "pas confiance", ],
+            "analysis":"La peur peut venir de la crainte de l'échec ou du jugement."
+        }
+}
     
-    if "bloque" in clean_input:
-        analysis=" Le blocage peut venir d'une difficulté trop élevée"
+    for category, data in causal_patterns.items():
 
-    
-    if "fatigue" in clean_input:
-        analysis=" la fatigue peut réduire la concentration : préconisation d'une séance légère"
+        keywords = data["keywords"]
 
-    if "motivation" in clean_input:
-        analysis= " La baisse de motivation peut venir d'un objectif trop grand ou un manque de victoire rapide"
+        category_analysis = data["analysis"]
 
+        if any (  keyword in clean_input for keyword in keywords):
+            analysis = category_analysis
 
     return analysis
-
-
+    
+    
 
 
 
