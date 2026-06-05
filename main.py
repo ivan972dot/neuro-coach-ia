@@ -21,20 +21,32 @@ def left_agent(user_input):
 
     clean_input= user_input.lower().strip()
 
-    analysis= f"analyse logique: l'utilisateur dit {user_input}"
+    logical_patterns = {
+        "python":{
+            "keywords": ["python","code","fonction", "boucle"],
+            "analysis":"La demande concerne Python. Il faut découper le problème en étapes simples."
+        },
 
-    if "python" in clean_input:
-        analysis = "Analyse logique : la demande concerne Python. Il faut découper le problème en étapes simples."
-        
+        "anglais":{
+            "keywords": ["anglais","english","speaking","shadowing"],
+            "analysis": "La demande concerne l’apprentissage de l’anglais."
+        },
 
-    if "anglais" in clean_input:
-        analysis = "Analyse logique : La demande concerne l' apprentissage de l'anglais"
-        
+        "projet":{
+            "keywords":["projet","application","construire","idée"],
+            "analysis": "La demande concerne l’organisation ou la construction d’un projet."
 
-    if "projet"in clean_input:
-        analysis = "Analyse logique : la demande concerne l'organisation ou la construction."
+        }
+    }
 
-    
+    analysis= "La demande doit être clarifié et structurée."
+
+    for _ , data in logical_patterns.items():
+        keywords = data["keywords"]
+        category_analyse = data["analysis"]
+
+        if any (keyword in clean_input for keyword in keywords):
+            analysis = category_analyse
 
     return analysis
 
@@ -68,7 +80,7 @@ def right_agent(user_input):
         }
 }
     
-    for category, data in causal_patterns.items():
+    for _ , data in causal_patterns.items():
 
         keywords = data["keywords"]
 
