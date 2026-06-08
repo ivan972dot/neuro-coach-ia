@@ -55,7 +55,7 @@ def right_agent(user_input):
     clean_input = user_input.lower().strip()
     causal_patterns = {
         "blocage" :{
-            "keywords":["bloque", "difficulté", "comprend pas" ],
+            "keywords":["bloque", "difficulté", "comprend pas", "blocage" ],
             "analysis": "Le  blocage peut venir d'une difficulté trop élévéé."
         },
 
@@ -101,16 +101,32 @@ def central_agent(user_input,left_analysis,right_analysis):
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
     conclusion = "phrase generale : je combine les deux analyses pour proposer une action adaptée"
+    decision_rules = [
+    {
+        "left": "python",
+        "right": "blocage",
+        "conclusion": "on découpe le problème en petites étapes."
+    },
 
-    if "python" in clean_left and "blocage" in clean_right:
-       conclusion = " on découpe le problème en petite étapes"
+    {
+        "left": "anglais",
+        "right": "fatigue",
+        "conclusion": "on fait une séance courte: écoute active+ shadowing"
+    },
 
-    if "anglais"in clean_left and "fatigue" in clean_right:
-        conclusion = "on peut  faire une séance courte : de l'écoute active + shadowing"
+    
+     {   "left": "python",
+        "right": "motivation",
+        "conclusion" : "on crée une mini-victoire rapide en Python."
+    }
+    
+    ]
 
-    if "python" in clean_left and "motivation" in clean_right:
-        conclusion = "on créer une  mini-victoire rapide en python"
-     
+    for rule in decision_rules:
+        if rule["left"] in clean_left and rule["right"] in clean_right:
+            conclusion = rule["conclusion"]
+
+
     final_response = f"""
     
         Message utilisateur:  {user_input}
