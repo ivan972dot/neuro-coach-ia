@@ -55,7 +55,7 @@ def right_agent(user_input):
     clean_input = user_input.lower().strip()
     causal_patterns = {
         "blocage" :{
-            "keywords":["bloque", "difficulté", "comprend pas", "blocage" ],
+            "keywords":["bloque","difficulté","comprend pas","blocage" ],
             "analysis": "Le  blocage peut venir d'une difficulté trop élévéé."
         },
 
@@ -70,16 +70,18 @@ def right_agent(user_input):
         },
 
         "stress" :{
-            "keywords": [" stressé","angoissé","tendu", " nerveux"],
+            "keywords": ["stressé","angoissé","tendu","nerveux"],
             "analysis":"Le stress peut venir d'une surcharge mentale ou d'une pression forte."
 
         },
         "peur" :{
-            "keywords": ["peur"," échouer", "pas confiance", ],
+            "keywords": ["peur","échouer", "pas confiance", ],
             "analysis":"La peur peut venir de la crainte de l'échec ou du jugement."
         }
 }
     
+    analysis = "Analyse causale générale : aucune cause pécise détectée."
+
     for _ , data in causal_patterns.items():
 
         keywords = data["keywords"]
@@ -92,11 +94,21 @@ def right_agent(user_input):
     return analysis
     
     
+def memory_agent(user_input, memory):
+
+    if memory == []:
+        memory_analysis = "Mémoire : aucun historique disponible"
+    else:
+        memory_analysis = f"Mémoire : il éxiste déja {len(memory)} échanges enregistrés."
+
+    return memory_analysis
 
 
 
 
-def central_agent(user_input,left_analysis,right_analysis):
+
+
+def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
 
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
@@ -135,6 +147,8 @@ def central_agent(user_input,left_analysis,right_analysis):
 
         
     {right_analysis}
+
+    {memory_analysis}
 
     conclusion finale : {conclusion}"""
 
@@ -195,7 +209,8 @@ while True:
   
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
-    final_response= central_agent(user_input,left_analysis,right_analysis)
+    memory_analysis= memory_agent(user_input, memory)
+    final_response= central_agent(user_input,left_analysis,right_analysis,memory_analysis)
 
     print(final_response)
     save_memory(user_input,final_response,memory)
