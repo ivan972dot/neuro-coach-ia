@@ -51,12 +51,12 @@ def left_agent(user_input):
     return analysis
 
 def right_agent(user_input):
-
+    
     clean_input = user_input.lower().strip()
     causal_patterns = {
         "blocage" :{
             "keywords":["bloque","difficulté","comprend pas","blocage" ],
-            "analysis": "Le  blocage peut venir d'une difficulté trop élévéé."
+            "analysis": "Le  blocage peut venir d'une difficulté trop élevé."
         },
 
         "fatigue" :{
@@ -80,7 +80,7 @@ def right_agent(user_input):
         }
 }
     
-    analysis = "Analyse causale générale : aucune cause pécise détectée."
+    analysis = "Analyse causale générale : aucune cause précise détectée."
 
     for _ , data in causal_patterns.items():
 
@@ -91,15 +91,36 @@ def right_agent(user_input):
         if any (  keyword in clean_input for keyword in keywords):
             analysis = category_analysis
 
-    return analysis
+        return analysis
     
     
 def memory_agent(user_input, memory):
-
+    
     if memory == []:
         memory_analysis = "Mémoire : aucun historique disponible"
     else:
-        memory_analysis = f"Mémoire : il éxiste déja {len(memory)} échanges enregistrés."
+        python_count= 0
+        anglais_count = 0
+        blocage_count = 0
+        fatigue_count = 0
+        for exchange in memory:
+            
+            user_message = exchange["user"]
+            user_message = user_message.lower()
+    
+            if "python" in user_message:
+                python_count +=1
+
+            if "anglais"in user_message:
+                anglais_count+=1
+            
+            if "bloque"in user_message or "blocage" in user_message or "bloqué"in user_message:
+                blocage_count += 1
+
+            if "fatigue" in user_message:
+                fatigue_count += 1
+
+        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. "
 
     return memory_analysis
 
