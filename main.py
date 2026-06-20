@@ -130,10 +130,31 @@ def memory_agent(user_input, memory):
 
 
         else:
-         dominant_topic = "Aucun sujet dominant"       
+         dominant_topic = "Aucun sujet dominant" 
 
 
-        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. Sujet dominant {dominant_topic} ."
+        if blocage_count > fatigue_count:
+            probleme_recurrent = "blocage"
+        
+
+        elif fatigue_count > blocage_count :
+            probleme_recurrent = "fatigue"
+        
+
+        else:
+            probleme_recurrent = "aucun sujet dominant"
+
+
+
+
+
+
+
+
+
+
+
+        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. Sujet dominant {dominant_topic} . Le problème le plus réccurent {probleme_recurrent}."
 
     return memory_analysis
 
