@@ -109,18 +109,31 @@ def memory_agent(user_input, memory):
             user_message = user_message.lower()
     
             if "python" in user_message:
-                python_count +=1
+                python_count+= 1
 
-            if "anglais"in user_message:
-                anglais_count+=1
-            
+            if "anglais" in user_message:
+                anglais_count+= 1
+
             if "bloque"in user_message or "blocage" in user_message or "bloqué"in user_message:
                 blocage_count += 1
 
             if "fatigue" in user_message:
                 fatigue_count += 1
 
-        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. "
+
+        if python_count > anglais_count :
+         dominant_topic ="python"
+
+
+        elif anglais_count > python_count:
+         dominant_topic = "Anglais"
+
+
+        else:
+         dominant_topic = "Aucun sujet dominant"       
+
+
+        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. Sujet dominant {dominant_topic} ."
 
     return memory_analysis
 
