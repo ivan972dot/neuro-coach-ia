@@ -55,7 +55,7 @@ def right_agent(user_input):
     clean_input = user_input.lower().strip()
     causal_patterns = {
         "blocage" :{
-            "keywords":["bloque","difficulté","comprend pas","blocage" ],
+            "keywords":["bloque","difficulté","comprend pas","blocage", "bloqué" ],
             "analysis": "Le  blocage peut venir d'une difficulté trop élevé."
         },
 
@@ -114,7 +114,7 @@ def memory_agent(user_input, memory):
             if "anglais" in user_message:
                 anglais_count+= 1
 
-            if "bloque"in user_message or "blocage" in user_message or "bloqué"in user_message:
+            if "bloque" in user_message or "blocage" in user_message or "bloqué" in user_message:
                 blocage_count += 1
 
             if "fatigue" in user_message:
@@ -154,7 +154,7 @@ def memory_agent(user_input, memory):
 
 
 
-        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. Sujet dominant {dominant_topic} . Le problème le plus réccurent {probleme_recurrent}."
+        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. Sujet dominant : {dominant_topic} . Problème récurrent : {probleme_recurrent}."
 
     return memory_analysis
 
@@ -167,6 +167,7 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
 
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
+    clean_memory = memory_analysis.lower().strip()
     conclusion = "phrase generale : je combine les deux analyses pour proposer une action adaptée"
     decision_rules = [
     {
@@ -189,10 +190,20 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
     
     ]
 
+    memory_rules = [
+        {
+            "memory_keywords": "problème récurrent : blocage",
+            "conclusion" : "le blocage revient souvent : on doit ralentir, simplifier et répéter."
+        }
+    ]
+
     for rule in decision_rules:
         if rule["left"] in clean_left and rule["right"] in clean_right:
             conclusion = rule["conclusion"]
 
+    for rule in memory_rules:
+        if rule["memory_keywords"] in clean_memory :
+            conclusion = rule["conclusion"]
 
     final_response = f"""
     
