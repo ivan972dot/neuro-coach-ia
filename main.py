@@ -209,17 +209,23 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
 
     final_response = f"""
     
-        Message utilisateur:  {user_input}
+     Je comprends ta demande : 
+         {user_input}
 
+
+    Analyse logique :
         {left_analysis}
 
-        
+     Analyse causale :   
     {right_analysis}
 
+    mémoire :
     {memory_analysis}
 
+    Action immédiate :
     {conclusion_immediate}
 
+    Stratégie long terme :
     {strategie_long_terme}
 
 
