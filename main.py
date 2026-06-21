@@ -168,7 +168,9 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
     clean_memory = memory_analysis.lower().strip()
-    conclusion = "phrase generale : je combine les deux analyses pour proposer une action adaptée"
+    conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
+    strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
+
     decision_rules = [
     {
         "left": "python",
@@ -199,11 +201,11 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
 
     for rule in decision_rules:
         if rule["left"] in clean_left and rule["right"] in clean_right:
-            conclusion = rule["conclusion"]
+            conclusion_immediate = rule["conclusion"]
 
     for rule in memory_rules:
         if rule["memory_keywords"] in clean_memory :
-            conclusion = rule["conclusion"]
+            strategie_long_terme = rule["conclusion"]
 
     final_response = f"""
     
@@ -216,7 +218,12 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
 
     {memory_analysis}
 
-    conclusion finale : {conclusion}"""
+    {conclusion_immediate}
+
+    {strategie_long_terme}
+
+
+    """
 
     
     return final_response
