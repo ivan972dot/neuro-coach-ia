@@ -163,13 +163,14 @@ def memory_agent(user_input, memory):
 
 
 
-def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
+def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug_mode):
 
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
     clean_memory = memory_analysis.lower().strip()
     conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
     strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
+    
 
     decision_rules = [
     {
@@ -206,8 +207,8 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
     for rule in memory_rules:
         if rule["memory_keywords"] in clean_memory :
             strategie_long_terme = rule["conclusion"]
-
-    final_response = f"""
+    if debug_mode:
+        final_response = f"""
     
      Je comprends ta demande : 
          {user_input}
@@ -228,9 +229,18 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis):
     Stratégie long terme :
     {strategie_long_terme}
 
-
+   
     """
+    else:
+        final_response = f""" Je comprends ta situation
+        
+        Action immédiate :
+        {conclusion_immediate}
 
+        Stratégie long terme : 
+        {strategie_long_terme}
+        
+        """
     
     return final_response
 
@@ -268,6 +278,7 @@ def clear_memory(memory):
 
 
 
+debug_mode = False
 
 
 while True:
@@ -289,7 +300,7 @@ while True:
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
     memory_analysis= memory_agent(user_input, memory)
-    final_response= central_agent(user_input,left_analysis,right_analysis,memory_analysis)
+    final_response= central_agent(user_input,left_analysis,right_analysis,memory_analysis,debug_mode)
 
     print(final_response)
     save_memory(user_input,final_response,memory)
