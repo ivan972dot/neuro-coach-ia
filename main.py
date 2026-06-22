@@ -200,13 +200,45 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
         }
     ]
 
-    for rule in decision_rules:
+
+    action_rules = [
+
+        {
+            "left": "python",
+            "right":"blocage",
+            "action":"Ouvre ton code, choisis une seule erreur , et explique-la en français avant de la corriger."
+        },
+
+        {
+            "left": "anglais",
+            "right": "blocage",
+            "action": "Ecris une phrase simple en anglais sur ton blocage, puis reformule-la une fois."
+        },
+
+        {
+            "left": "projet",
+            "right": "blocage",
+            "action": "Ecris l'objectif du projet en une phrase, puis découpe-le en 3 petites étapes."
+        }
+    ]
+
+    
+
+
+    for rule in action_rules:
+        if rule["left"] in clean_left and rule["right"] in clean_right:
+            mini_action = rule["action"]
+
+
+
+    for rule in decision_rules:  
         if rule["left"] in clean_left and rule["right"] in clean_right:
             conclusion_immediate = rule["conclusion"]
 
     for rule in memory_rules:
         if rule["memory_keywords"] in clean_memory :
             strategie_long_terme = rule["conclusion"]
+
     if debug_mode:
         final_response = f"""
     
