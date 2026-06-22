@@ -170,7 +170,7 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     clean_memory = memory_analysis.lower().strip()
     conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
     strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
-    
+    mini_action = " Choisis une petite action simple et fais-la maintenant"
 
     decision_rules = [
     {
@@ -229,6 +229,9 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     Stratégie long terme :
     {strategie_long_terme}
 
+    Mini-action maintenant :
+    {mini_action}
+
    
     """
     else:
@@ -239,6 +242,9 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
 
         Stratégie long terme : 
         {strategie_long_terme}
+
+        Mini_action maintenant :
+        {mini_action}
         
         """
     
