@@ -164,6 +164,8 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
     mini_action = " Choisis une petite action simple et fais-la maintenant"
     action_rules = rules["action_rules"]
+    memory_rules = rules["memory_rules"]
+
     decision_rules = [
     {
         "left": "python",
@@ -185,12 +187,7 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     
     ]
 
-    memory_rules = [
-        {
-            "memory_keywords": "problème récurrent : blocage",
-            "conclusion" : "le blocage revient souvent : on doit ralentir, simplifier et répéter."
-        }
-    ]
+    
 
 
    
