@@ -67,8 +67,9 @@ def left_agent(user_input):
 
 
 def right_agent(user_input):
-    
+
     clean_input = user_input.lower().strip()
+
     causal_patterns = rules["causal_patterns"]
     
     analysis = "Analyse causale générale : aucune cause précise détectée."
@@ -79,10 +80,10 @@ def right_agent(user_input):
 
         category_analysis = data["analysis"]
 
-        if any (  keyword in clean_input for keyword in keywords):
+        if any (keyword in clean_input for keyword in keywords):
             analysis = category_analysis
 
-        return analysis
+    return analysis
     
     
 def memory_agent(user_input, memory):
@@ -165,43 +166,18 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     mini_action = " Choisis une petite action simple et fais-la maintenant"
     action_rules = rules["action_rules"]
     memory_rules = rules["memory_rules"]
-
-    decision_rules = [
-    {
-        "left": "python",
-        "right": "blocage",
-        "conclusion": "on découpe le problème en petites étapes."
-    },
-
-    {
-        "left": "anglais",
-        "right": "fatigue",
-        "conclusion": "on fait une séance courte: écoute active+ shadowing"
-    },
-
-    
-     {   "left": "python",
-        "right": "motivation",
-        "conclusion" : "on crée une mini-victoire rapide en Python."
-    }
-    
-    ]
-
-    
-
-
+    decision_rules = rules["decision_rules"]
    
-
 
     for rule in action_rules:
         if rule["left"] in clean_left and rule["right"] in clean_right:
             mini_action = rule["action"]
 
 
-
     for rule in decision_rules:  
         if rule["left"] in clean_left and rule["right"] in clean_right:
             conclusion_immediate = rule["conclusion"]
+
 
     for rule in memory_rules:
         if rule["memory_keywords"] in clean_memory :
