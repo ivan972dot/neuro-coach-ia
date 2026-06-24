@@ -17,6 +17,21 @@ def load_memory():
 memory = load_memory()
 
 
+def load_rules ():
+    try:
+        with open("rules.json","r", encoding= 'utf-8') as file:
+            donnees = json.load(file)
+        return donnees
+
+    except:
+        return []
+
+memory = load_memory()
+rules = load_rules()
+
+
+
+
 def left_agent(user_input):
 
     clean_input= user_input.lower().strip()
@@ -50,35 +65,11 @@ def left_agent(user_input):
 
     return analysis
 
+
 def right_agent(user_input):
     
     clean_input = user_input.lower().strip()
-    causal_patterns = {
-        "blocage" :{
-            "keywords":["bloque","difficulté","comprend pas","blocage", "bloqué" ],
-            "analysis": "Le  blocage peut venir d'une difficulté trop élevé."
-        },
-
-        "fatigue" :{
-            "keywords": ["fatigue","épuisé", "crevé"],
-            "analysis": "La fatigue peut réduire la concentration."
-        },
-
-        "motivation" :{
-            "keywords": ["motivation basse", "pas motivé", "motivation"],
-            "analysis":"La baisse de motivation peut venir d'un objectif trop grand ou un manque de victoire rapide."
-        },
-
-        "stress" :{
-            "keywords": ["stressé","angoissé","tendu","nerveux"],
-            "analysis":"Le stress peut venir d'une surcharge mentale ou d'une pression forte."
-
-        },
-        "peur" :{
-            "keywords": ["peur","échouer", "pas confiance", ],
-            "analysis":"La peur peut venir de la crainte de l'échec ou du jugement."
-        }
-}
+    causal_patterns = rules["causal_patterns"]
     
     analysis = "Analyse causale générale : aucune cause précise détectée."
 
@@ -103,6 +94,7 @@ def memory_agent(user_input, memory):
         anglais_count = 0
         blocage_count = 0
         fatigue_count = 0
+        
         for exchange in memory:
             
             user_message = exchange["user"]
