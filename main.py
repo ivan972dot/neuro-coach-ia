@@ -163,7 +163,7 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
     strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
     mini_action = " Choisis une petite action simple et fais-la maintenant"
-
+    action_rules = rules["action_rules"]
     decision_rules = [
     {
         "left": "python",
@@ -193,28 +193,7 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     ]
 
 
-    action_rules = [
-
-        {
-            "left": "python",
-            "right":"blocage",
-            "action":"Ouvre ton code, choisis une seule erreur , et explique-la en français avant de la corriger."
-        },
-
-        {
-            "left": "anglais",
-            "right": "blocage",
-            "action": "Ecris une phrase simple en anglais sur ton blocage, puis reformule-la une fois."
-        },
-
-        {
-            "left": "projet",
-            "right": "blocage",
-            "action": "Ecris l'objectif du projet en une phrase, puis découpe-le en 3 petites étapes."
-        }
-    ]
-
-    
+   
 
 
     for rule in action_rules:
