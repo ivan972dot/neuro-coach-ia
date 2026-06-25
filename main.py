@@ -278,21 +278,22 @@ debug_mode = False
 while True:
     
     user_input= input("YOU:  " )
+    clean_input = user_input.lower().strip()
 
-    if user_input.lower().strip() == "stop":
-         print("fin de conversation")
-         break
+    if clean_input == "stop":
+        print("fin de conversation")
+        break
 
-    if user_input.lower().strip() == "memory":
-            show_memory(memory)
-            continue
-    if user_input.lower().strip()== "clear_memory":
-            clear_memory(memory)
-            continue
+    if clean_input == "memory":
+        show_memory(memory)
+        continue
+    if clean_input== "clear_memory":
+        clear_memory(memory)
+        continue
 
-    if user_input.lower().strip()== "show_rules":
-            show_rules(rules)
-            continue
+    if clean_input == "show_rules":
+        show_rules(rules)
+        continue
     
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
