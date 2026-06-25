@@ -259,6 +259,18 @@ def clear_memory(memory):
   
 
 
+def show_rules(rules):
+    if  not rules :
+        print("Aucune règle chargée")
+    else:
+        print("Règle disponible")
+        for categories in rules:
+            print(categories)
+
+
+
+
+
 
 debug_mode = False
 
@@ -278,7 +290,10 @@ while True:
             clear_memory(memory)
             continue
 
-  
+    if user_input.lower().strip()== "show_rules":
+            show_rules(rules)
+            continue
+    
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
     memory_analysis= memory_agent(user_input, memory)
