@@ -294,7 +294,15 @@ def show_status(memory,rules,debug_mode):
 
 
 
-        
+
+def show_help():
+    print("=== Commandes disponible ===")
+    print ("stop : arrêt du programme.")
+    print("memory : affiche la mémoire.")
+    print("clear_memory : effacer la mémoire.")
+    print("show_rules : afficher  les catégories de règles.")
+    print("status : afficher l'état du coach.")
+    print("help : afficher cette aide.")    
 
 
 
@@ -324,6 +332,12 @@ while True:
     if clean_input  == "status":
         show_status(memory,rules,debug_mode)
         continue
+
+    if clean_input == "help":
+        show_help()
+        continue
+
+
 
 
     left_analysis= left_agent(user_input)
