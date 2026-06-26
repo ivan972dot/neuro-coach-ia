@@ -263,9 +263,9 @@ def show_rules(rules):
     if  not rules :
         print("Aucune règle chargée")
     else:
-        print("Règle disponible")
+        print("=== Règles disponibles ===")
         for categories in rules:
-            print(categories)
+            print(f"{categories} : {len(rules[categories])} règles")
 
 
 def show_status(memory,rules,debug_mode):
