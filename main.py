@@ -268,12 +268,38 @@ def show_rules(rules):
             print(categories)
 
 
+def show_status(memory,rules,debug_mode):
+
+    if memory:
+        print("Mémoire chargée : oui ")
+        
+    else:
+        print("Mémoire chargée : non")
+
+
+    print(f"Nombre d'échanges : {len(memory)}")
+
+    if rules:
+
+        print("Règles chargées : oui ")
+
+    else:
+
+        print("Règle chargées : non")
+
+    print(f"Catégories de règles : {len(rules)}")
+
+    print (f"Mode debug : {debug_mode}")
+
+
+
+
+        
 
 
 
 
 debug_mode = False
-
 
 while True:
     
@@ -295,6 +321,11 @@ while True:
         show_rules(rules)
         continue
     
+    if clean_input  == "status":
+        show_status(memory,rules,debug_mode)
+        continue
+
+
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
     memory_analysis= memory_agent(user_input, memory)
