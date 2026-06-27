@@ -313,6 +313,30 @@ def show_help():
 
 
 
+def show_categories(rules):
+    categorie = input("categorie : ").lower().strip()
+
+    if categorie in rules:
+        print(categorie)
+        if categorie == "action_rules":
+            print("left + right + action")
+            for rule  in rules[categorie]:
+                print (f"{rule['left']} + {rule['right']} : {rule['action']}")
+        elif categorie == "causal_patterns":
+            for name, data in rules["causal_patterns"].items():
+                keywords_text = ", ".join(data["keywords"])
+                print (name)
+                print (f"keywords :  {keywords_text}")
+                print (f"analysis : data['analysis']")
+        else : 
+          print("Affichage détaillé pas encore disponible pour cette catégorie.")  
+                   
+    else:
+
+        print("catégorie inconnue")
+
+
+
 
 debug_mode = False
 
@@ -343,7 +367,10 @@ while True:
     if clean_input == "help":
         show_help()
         continue
-
+    
+    if clean_input == "categorie":
+        show_categories(rules)
+        continue
 
 
 
