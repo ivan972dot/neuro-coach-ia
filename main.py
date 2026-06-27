@@ -260,12 +260,19 @@ def clear_memory(memory):
 
 
 def show_rules(rules):
+    
     if  not rules :
         print("Aucune règle chargée")
     else:
         print("=== Règles disponibles ===")
         for categories in rules:
-            print(f"{categories} : {len(rules[categories])} règles")
+            nombre = len(rules[categories])
+            if nombre == 1 :
+                mot ="règle"
+            else: 
+                mot ="règles"
+
+            print(f"{categories} : { nombre}  {mot}")
 
 
 def show_status(memory,rules,debug_mode):
