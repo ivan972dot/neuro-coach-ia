@@ -328,6 +328,14 @@ def show_categories(rules):
                 print (name)
                 print (f"keywords :  {keywords_text}")
                 print (f"analysis : data['analysis']")
+        elif categorie == "decision_rules":
+            for rule in rules["decision_rules"]:
+                print(f"{rule['left']} + {rule['right']} : {rule['conclusion']}")
+
+        elif categorie == "memory_rules":
+            for  rule in rules["memory_rules"]:
+                print(f"keywords : {rule['memory_keywords']}")
+                print(f"conclusion : {rule['conclusion']}")
         else : 
           print("Affichage détaillé pas encore disponible pour cette catégorie.")  
                    
