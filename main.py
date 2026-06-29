@@ -385,7 +385,10 @@ while True:
         print("Règles rechargées")
         continue
 
-
+    if clean_input == "reload_memory":
+        memory = load_memory()
+        print("Mémoire rechargée")
+        continue
 
 
 
