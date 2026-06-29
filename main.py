@@ -380,6 +380,14 @@ while True:
         show_categories(rules)
         continue
 
+    if clean_input == "reload_rules":
+        rules = load_rules()
+        print("Règles rechargées")
+        continue
+
+
+
+
 
 
     left_analysis= left_agent(user_input)
