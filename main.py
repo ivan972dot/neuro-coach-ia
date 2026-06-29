@@ -241,6 +241,12 @@ def save_memory(user_input,final_response,memory):
 
 
 
+def save_backup(memory):
+    with open("memory_backup.json",'w', encoding= "utf8") as file:
+        json.dump(memory,file,indent=4,ensure_ascii=False)
+        print("Sauvegarde créée")
+
+
 
 def show_memory(memory):
 
@@ -311,7 +317,7 @@ def show_help():
     print("show_rules : afficher  les catégories de règles.")
     print("status : afficher l'état du coach.")
     print("help : afficher cette aide.")    
-
+    print("save_backup : mémoire suvegardée")
 
 
 def show_categories(rules):
@@ -394,6 +400,14 @@ while True:
     if clean_input == "clear_screen":
         os.system("cls")
         continue
+
+    
+    if clean_input =="save_backup":
+        save_backup(memory)
+        continue
+
+
+
 
 
     left_analysis= left_agent(user_input)
