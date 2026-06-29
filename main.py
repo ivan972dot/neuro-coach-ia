@@ -1,4 +1,5 @@
 import json
+import os
 
 memory=[]
 
@@ -390,7 +391,9 @@ while True:
         print("Mémoire rechargée")
         continue
 
-
+    if clean_input == "clear_screen":
+        os.system("cls")
+        continue
 
 
     left_analysis= left_agent(user_input)
