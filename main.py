@@ -266,6 +266,18 @@ def clear_memory(memory):
   
 
 
+def restore_memory():
+    with open("memory_backup.json",'r', encoding="utf8") as file:
+            backup =json.load(file)
+
+    with open("memory.json",'w', encoding="utf8") as file:
+            json.dump(backup, file, indent=4, ensure_ascii=False)
+
+            print("Mémoire restaurée")
+            return backup
+
+
+
 def show_rules(rules):
     
     if  not rules :
@@ -406,7 +418,11 @@ while True:
         save_backup(memory)
         continue
 
+    
 
+    if clean_input =="restore_memory":
+        memory = restore_memory()
+        continue
 
 
 
