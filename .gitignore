@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 memory.json
+memory_backup.json
