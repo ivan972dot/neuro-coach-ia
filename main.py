@@ -260,10 +260,15 @@ def show_memory(memory):
     
 
 def clear_memory(memory):
-    memory.clear()
-    with open("memory.json", "w") as file:
-      json.dump(memory,file)
-  
+      confirmation = input("Confirmer suppression mémoire ? oui/non :  ").lower().strip()
+
+      if confirmation == "oui":
+            memory.clear()
+            with open("memory.json", "w",encoding="utf8") as file:
+             json.dump(memory,file,indent=4,ensure_ascii=False)
+            print("Mémoire effacée")
+      else:
+            print("Suppression annulée")
 
 
 def restore_memory():
