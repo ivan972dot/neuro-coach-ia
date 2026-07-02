@@ -353,7 +353,17 @@ def export_status(memory, rules, debug_mode):
 
             if rules:  
                 file.write("Règles chargées : oui\n") 
-                file.write (f" Categories de règles :{len(rules)}\n")
+                file.write (f" Catégories de règles : {len(rules)}\n")
+
+                file.write("=== Catégories de règles ===\n")
+                for categorie in rules:
+                    nombre = len(rules[categorie])
+                    if nombre == 1:
+                        mot = "règle"
+                    else:
+                        mot = "règles" 
+
+                    file.write (f"{categorie} : {nombre} {mot}\n")
 
             else:
                 file.write("Règles chargées : non \n")
