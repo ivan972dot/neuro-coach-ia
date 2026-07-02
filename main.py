@@ -337,6 +337,39 @@ def show_help():
     print("save_backup : mémoire suvegardée")
 
 
+
+def export_status(memory, rules, debug_mode):
+
+         with open('status.txt','w',encoding='utf8') as file:
+
+            file.write("=== NeuroCoach Status ===\n")
+
+            if memory :
+                file.write("Mémoire chargée : oui\n")
+                file.write(f" Nombre d'échanges : {len(memory)}\n")
+
+            else:
+                file.write("Mémoire chargée : non\n")
+
+            if rules:  
+                file.write("Règles chargées : oui\n") 
+                file.write (f" Categories de règles :{len(rules)}\n")
+
+            else:
+                file.write("Règles chargées : non \n")
+
+
+            file.write(f" Mode debug : {debug_mode}\n")
+         print("Status exporté dans status.txt")
+
+        
+        
+
+
+
+
+
+
 def show_categories(rules):
     categorie = input("categorie : ").lower().strip()
 
@@ -429,6 +462,9 @@ while True:
         memory = restore_memory()
         continue
 
+    if clean_input =="export_status":
+        export_status(memory,rules,debug_mode)
+        continue
 
 
     left_analysis= left_agent(user_input)
