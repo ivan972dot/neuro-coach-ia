@@ -272,14 +272,21 @@ def clear_memory(memory):
 
 
 def restore_memory():
-    with open("memory_backup.json",'r', encoding="utf8") as file:
-            backup =json.load(file)
+
+    try :
+        with open("memory_backup.json",'r',encoding='utf8') as file:
+            backup = json.load(file)
+            
+    except:
+            print("Aucune sauvegarde trouvée.")
+            return []
 
     with open("memory.json",'w', encoding="utf8") as file:
             json.dump(backup, file, indent=4, ensure_ascii=False)
 
-            print("Mémoire restaurée")
-            return backup
+
+    print("Mémoire restaurée")
+    return backup
 
 
 
