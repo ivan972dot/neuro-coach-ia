@@ -263,9 +263,10 @@ def clear_memory(memory):
       confirmation = input("Confirmer suppression mémoire ? oui/non :  ").lower().strip()
 
       if confirmation == "oui":
+            save_backup(memory)
             memory.clear()
             with open("memory.json", "w",encoding="utf8") as file:
-             json.dump(memory,file,indent=4,ensure_ascii=False)
+                json.dump(memory,file,indent=4,ensure_ascii=False)
             print("Mémoire effacée")
       else:
             print("Suppression annulée")
