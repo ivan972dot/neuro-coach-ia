@@ -3,6 +3,22 @@ import os
 
 memory=[]
 
+COMMANDS =[
+        "stop",
+        " memory",
+        "clear_memory",
+        "show_rules",
+        "categorie",
+        "status",
+        "help",
+        "reload_rules",
+        "reload_memory",
+        "clear_screen",
+        "save_backup",
+        "export_status",
+        "restore_memory",
+        "commands_count"
+    ]
 
 
 def load_memory():
@@ -335,14 +351,9 @@ def show_status(memory,rules,debug_mode):
 
 
 def show_help():
-    print("=== Commandes disponible ===")
-    print ("stop : arrêt du programme.")
-    print("memory : affiche la mémoire.")
-    print("clear_memory : effacer la mémoire.")
-    print("show_rules : afficher  les catégories de règles.")
-    print("status : afficher l'état du coach.")
-    print("help : afficher cette aide.")    
-    print("save_backup : mémoire suvegardée")
+    print("=== Commandes disponibles ===")
+    for command in COMMANDS:
+        print (f"- {command}")
 
 
 
@@ -420,28 +431,8 @@ def show_categories(rules):
 
 
 def show_command_count():
-    commands =[
-        "stop",
-        "memory",
-        "clear_memory",
-        "show_rules",
-        "categorie"
-        "status",
-        "help",
-        "reload_rules",
-        "reload_memory",
-        "clear_screen",
-        "save_backup",
-        "export_status",
-        "restore_memory",
-        "commands_count"
-    ]
-    print(f"Nombre de commandes disponibles  : {len(commands)}")
-
-
-
-
-
+   
+    print(f"Nombre de commandes disponibles  : {len(COMMANDS)}")
 
 
 
