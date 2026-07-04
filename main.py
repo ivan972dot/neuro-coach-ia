@@ -419,6 +419,31 @@ def show_categories(rules):
         print("catégorie inconnue")
 
 
+def show_command_count():
+    commands =[
+        "stop",
+        "memory",
+        "clear_memory",
+        "show_rules",
+        "categorie"
+        "status",
+        "help",
+        "reload_rules",
+        "reload_memory",
+        "clear_screen",
+        "save_backup",
+        "export_status",
+        "restore_memory",
+        "commands_count"
+    ]
+    print(f"Nombre de commandes disponibles  : {len(commands)}")
+
+
+
+
+
+
+
 
 
 debug_mode = False
@@ -483,7 +508,11 @@ while True:
     if clean_input =="export_status":
         export_status(memory,rules,debug_mode)
         continue
+    
 
+    if clean_input == "commands_count":
+        show_command_count()
+        continue
 
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
