@@ -3,22 +3,43 @@ import os
 
 memory=[]
 
-COMMANDS =[
+COMMANDS = [
         "stop",
-        " memory",
+        "memory",
         "clear_memory",
         "show_rules",
         "categorie",
         "status",
-        "help",
+        "help" ,
         "reload_rules",
         "reload_memory",
         "clear_screen",
         "save_backup",
         "export_status",
         "restore_memory",
-        "commands_count"
-    ]
+        "commands_count"  
+        
+]
+
+
+COMMAND_DESCRIPTIONS = {
+
+     "stop": "arrêt du programme",
+    "memory" : "afficher la mémoire",
+    "clear_memory" : "nettoyage mémoire",
+    "show_rules" : "affichage des règles",
+     "categorie" : "afficher le détail d'une catégorie.",
+     "status" : "afficher l'état du coach",
+    "help" : "afficher la liste des commandes" ,
+    "reload_rules" :"recharger rules.json",
+    "reload_memory" : "recharger memory.json" ,
+    "clear_screen" :"nettoyer le terminal" ,
+     "save_backup" :"sauvegarder la mémoire" ,
+     "export_status" :"exporte le status dans status.txt"  ,
+     "restore_memory" :"restaurer la mémoire depuis la sauvegarde" ,
+    "commands_count" : "compter les commandes disponibles"
+ }
+
 
 
 def load_memory():
@@ -353,7 +374,12 @@ def show_status(memory,rules,debug_mode):
 def show_help():
     print("=== Commandes disponibles ===")
     for command in COMMANDS:
-        print (f"- {command}")
+        if command in COMMAND_DESCRIPTIONS:
+            description = COMMAND_DESCRIPTIONS[command]
+        else:
+            description = "description non disponible."
+
+        print (f"- {command} : {description}")
 
 
 
