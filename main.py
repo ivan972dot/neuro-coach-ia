@@ -472,6 +472,53 @@ def show_command_count():
 
 
 
+
+def is_command(clean_input):
+
+    return clean_input in COMMANDS
+     
+
+def handle_command(clean_input,memory,rules,debug_mode):
+
+    if clean_input == "help":
+        show_help()
+        return True
+    
+    if clean_input == "version":
+        show_version()
+        return True
+    
+
+    if clean_input == "commands_count":
+        show_command_count()
+        return True
+    
+    
+    if clean_input == "status":
+        show_status(memory,rules,debug_mode)
+        return True
+
+    if clean_input == "show_rules":
+        show_rules(rules)
+        return True
+
+    if clean_input == "categorie":
+        show_categories(rules)
+        return True
+
+    if clean_input == "memory":
+        show_memory(memory)
+        return True
+
+    if clean_input == "export_status":
+        export_status(memory,rules,debug_mode)
+        return True
+
+    return False
+
+
+
+
 debug_mode = False
 
 while True:
@@ -479,37 +526,27 @@ while True:
     user_input= input("YOU:  " )
     clean_input = user_input.lower().strip()
 
+    if  handle_command(clean_input,memory,rules,debug_mode):
+             continue
+
+
+
     if clean_input == "stop":
         print("fin de conversation")
         break
 
-    if clean_input == "memory":
-        show_memory(memory)
-        continue
+  
     if clean_input== "clear_memory":
         clear_memory(memory)
         continue
-
-    if clean_input == "show_rules":
-        show_rules(rules)
-        continue
     
-    if clean_input  == "status":
-        show_status(memory,rules,debug_mode)
-        continue
-
-    if clean_input == "help":
-        show_help()
-        continue
     
-    if clean_input == "categorie":
-        show_categories(rules)
-        continue
 
     if clean_input == "reload_rules":
         rules = load_rules()
         print("Règles rechargées")
         continue
+
 
     if clean_input == "reload_memory":
         memory = load_memory()
@@ -531,20 +568,11 @@ while True:
         memory = restore_memory()
         continue
 
-    if clean_input =="export_status":
-        export_status(memory,rules,debug_mode)
-        continue
-    
+   
 
-    if clean_input == "commands_count":
-        show_command_count()
+    if clean_input == "is_command":
+        is_command(clean_input)
         continue
-    
-    if clean_input == "version":
-        show_version()
-        continue
-
-
 
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
