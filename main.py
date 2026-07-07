@@ -3,6 +3,9 @@ import os
 
 memory=[]
 
+
+APP_VERSION = "1.0.0"
+
 COMMANDS = [
         "stop",
         "memory",
@@ -17,7 +20,8 @@ COMMANDS = [
         "save_backup",
         "export_status",
         "restore_memory",
-        "commands_count"  
+        "commands_count",
+        "version"  
         
 ]
 
@@ -37,8 +41,13 @@ COMMAND_DESCRIPTIONS = {
      "save_backup" :"sauvegarder la mémoire" ,
      "export_status" :"exporte le status dans status.txt"  ,
      "restore_memory" :"restaurer la mémoire depuis la sauvegarde" ,
-    "commands_count" : "compter les commandes disponibles"
+    "commands_count" : "compter les commandes disponibles",
+    "version" : "version actuelle du coach"
  }
+
+
+def show_version():
+    print(f"NeuroCoach IA - version : {APP_VERSION}")
 
 
 
@@ -530,6 +539,12 @@ while True:
     if clean_input == "commands_count":
         show_command_count()
         continue
+    
+    if clean_input == "version":
+        show_version()
+        continue
+
+
 
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
