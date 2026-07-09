@@ -482,39 +482,67 @@ def handle_command(clean_input,memory,rules,debug_mode):
 
     if clean_input == "help":
         show_help()
-        return True
+        return True, memory, rules
     
     if clean_input == "version":
         show_version()
-        return True
-    
+        return True, memory, rules
 
     if clean_input == "commands_count":
         show_command_count()
-        return True
-    
+        return True, memory, rules
     
     if clean_input == "status":
         show_status(memory,rules,debug_mode)
-        return True
+        return True, memory, rules
 
     if clean_input == "show_rules":
         show_rules(rules)
-        return True
+        return True, memory, rules
 
     if clean_input == "categorie":
         show_categories(rules)
-        return True
+        return True, memory, rules
 
     if clean_input == "memory":
         show_memory(memory)
-        return True
+        return True, memory , rules
 
     if clean_input == "export_status":
         export_status(memory,rules,debug_mode)
         return True
 
-    return False
+    if clean_input == "reload_rules":
+        rules = load_rules()
+        print("Régles rechargées")
+        return True, memory, rules
+
+    if clean_input == "reload_memory":
+        memory = load_memory()
+        print("Mémoire rechargée")
+        return True, memory, rules
+
+    if clean_input =="restore_memory":
+        memory = restore_memory()
+        return True, memory, rules
+
+     
+    if clean_input =="save_backup":
+        save_backup(memory)
+        return True, memory, rules
+    
+    
+    if clean_input == "clear_screen":
+        os.system("cls")
+        return True, memory, rules
+
+    if clean_input== "clear_memory":
+        clear_memory(memory)
+        return True, memory, rules
+    
+
+
+    return False, memory, rules
 
 
 
@@ -526,53 +554,15 @@ while True:
     user_input= input("YOU:  " )
     clean_input = user_input.lower().strip()
 
-    if  handle_command(clean_input,memory,rules,debug_mode):
+    command_handled, memory, rules = handle_command(clean_input, memory, rules, debug_mode)
+
+    if  command_handled:
              continue
-
-
 
     if clean_input == "stop":
         print("fin de conversation")
         break
 
-  
-    if clean_input== "clear_memory":
-        clear_memory(memory)
-        continue
-    
-    
-
-    if clean_input == "reload_rules":
-        rules = load_rules()
-        print("Règles rechargées")
-        continue
-
-
-    if clean_input == "reload_memory":
-        memory = load_memory()
-        print("Mémoire rechargée")
-        continue
-
-    if clean_input == "clear_screen":
-        os.system("cls")
-        continue
-
-    
-    if clean_input =="save_backup":
-        save_backup(memory)
-        continue
-
-    
-
-    if clean_input =="restore_memory":
-        memory = restore_memory()
-        continue
-
-   
-
-    if clean_input == "is_command":
-        is_command(clean_input)
-        continue
 
     left_analysis= left_agent(user_input)
     right_analysis= right_agent(user_input)
