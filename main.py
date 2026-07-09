@@ -554,14 +554,17 @@ while True:
     user_input= input("YOU:  " )
     clean_input = user_input.lower().strip()
 
-    command_handled, memory, rules = handle_command(clean_input, memory, rules, debug_mode)
-
-    if  command_handled:
-             continue
 
     if clean_input == "stop":
         print("fin de conversation")
         break
+
+    command_handled, memory, rules = handle_command(clean_input, memory, rules, debug_mode)
+
+    if  command_handled:
+     continue
+
+    
 
 
     left_analysis= left_agent(user_input)
