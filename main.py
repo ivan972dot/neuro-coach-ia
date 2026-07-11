@@ -46,6 +46,9 @@ COMMAND_DESCRIPTIONS = {
  }
 
 
+
+
+
 def show_version():
     print(f"NeuroCoach IA - version : {APP_VERSION}")
 
@@ -479,67 +482,81 @@ def is_command(clean_input):
 
 
 
+def reload_rules_command():
+    new_rules = load_rules()
+    print ("Règles chargées")
+    return new_rules
+
+
+def reload_memory_command():
+    new_memory = load_memory()
+    print("Mémoire rechargée")
+    return new_memory
+
+
 
 def handle_command(clean_input,memory,rules,debug_mode):
 
-    if clean_input == "help":
-        show_help()
-        return True, memory, rules, False
+    simple_commands = {
+    "help": show_help,
+    "version": show_version,
+    "commands_count":show_command_count,
+    "clear_screen" : lambda: os.system('cls')
+}
     
-    if clean_input == "version":
-        show_version()
+    context_command ={
+        "status": lambda : show_status(memory, rules, debug_mode),
+        "show_rules" : lambda : show_rules(rules),
+        "memory": lambda : show_memory(memory),
+        "categorie": lambda : show_categories(rules),
+        "export_status": lambda : export_status(memory, rules, debug_mode),
+        "save_backup": lambda : save_backup(memory),
+         "clear_memory" : lambda : clear_memory(memory)
+        
+     }
+
+
+
+    state_commands = {
+        "reload_rules": reload_rules_command
+        
+
+    }
+
+
+    memory_commands = {
+        "reload_memory" : reload_memory_command,
+        "restore_memory" : restore_memory
+       
+    }
+
+    if clean_input in memory_commands:
+         memory_function = memory_commands[clean_input]
+         memory = memory_function()
+         return True, memory, rules, False
+
+
+
+
+    if clean_input in state_commands:
+        state_function = state_commands[clean_input]
+        rules = state_function()
+        return True,memory, rules, False
+
+
+    if clean_input in context_command:
+        context_function = context_command[clean_input]
+        context_function()
         return True, memory, rules, False
 
-    if clean_input == "commands_count":
-        show_command_count()
-        return True, memory, rules, False
-    
-    if clean_input == "status":
-        show_status(memory,rules,debug_mode)
-        return True, memory, rules, False
-    
-    if clean_input == "show_rules":
-        show_rules(rules)
-        return True, memory, rules, False
 
-    if clean_input == "categorie":
-        show_categories(rules)
-        return True, memory, rules, False
+    if clean_input in simple_commands:
+        command_function = simple_commands[clean_input]
+        command_function()
+        return True, memory, rules, False 
 
-    if clean_input == "memory":
-        show_memory(memory)
-        return True, memory, rules, False
 
-    if clean_input == "export_status":
-        export_status(memory,rules,debug_mode)
-        return True,memory,rules,False
-
-    if clean_input == "reload_rules":
-        rules = load_rules()
-        print("Régles rechargées")
-        return True, memory, rules, False
-
-    if clean_input == "reload_memory":
-        memory = load_memory()
-        print("Mémoire rechargée")
-        return True, memory, rules, False
-
-    if clean_input =="restore_memory":
-        memory = restore_memory()
-        return True, memory, rules, False
-     
-    if clean_input =="save_backup":
-        save_backup(memory)
-        return True, memory, rules, False
-    
-    
-    if clean_input == "clear_screen":
-        os.system("cls")
-        return True, memory, rules, False
-
-    if clean_input== "clear_memory":
-        clear_memory(memory)
-        return True, memory, rules, False
+   
     
     if clean_input == "stop":
         print("fin de conversation")
