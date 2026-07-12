@@ -61,10 +61,11 @@ def load_memory():
           return donnees
       
     except:
+        print("Mémoire introuvable ou illisible. Nouvelle mémoire créée.")
         return []
 
 
-memory = load_memory()
+
 
 
 def load_rules ():
@@ -74,7 +75,8 @@ def load_rules ():
         return donnees
 
     except:
-        return []
+        print("Règles introuvables ou illisibles.")
+        return {}
 
 memory = load_memory()
 rules = load_rules()
@@ -120,7 +122,7 @@ def right_agent(user_input):
 
     clean_input = user_input.lower().strip()
 
-    causal_patterns = rules["causal_patterns"]
+    causal_patterns = rules.get("causal_patterns", {})
     
     analysis = "Analyse causale générale : aucune cause précise détectée."
 
@@ -214,24 +216,24 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
     strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
     mini_action = " Choisis une petite action simple et fais-la maintenant"
-    action_rules = rules["action_rules"]
-    memory_rules = rules["memory_rules"]
-    decision_rules = rules["decision_rules"]
+    action_rules = rules.get("action_rules", [])
+    memory_rules = rules.get("memory_rules", [])
+    decision_rules = rules.get("decision_rules", [])
    
 
     for rule in action_rules:
-        if rule["left"] in clean_left and rule["right"] in clean_right:
-            mini_action = rule["action"]
+        if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
+            mini_action = rule.get("action", "action manquante")
 
 
     for rule in decision_rules:  
-        if rule["left"] in clean_left and rule["right"] in clean_right:
-            conclusion_immediate = rule["conclusion"]
+        if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
+            conclusion_immediate = rule.get("conclusion", "conclusion manquante")
 
 
     for rule in memory_rules:
-        if rule["memory_keywords"] in clean_memory :
-            strategie_long_terme = rule["conclusion"]
+        if rule.get("memory_keywords", "memory_keywords manquante")in clean_memory :
+            strategie_long_terme = rule.get("conclusion", "conclusion manquante")
 
     if debug_mode:
         final_response = f"""
@@ -444,22 +446,24 @@ def show_categories(rules):
         print(categorie)
         if categorie == "action_rules":
             print("left + right + action")
-            for rule  in rules[categorie]:
-                print (f"{rule['left']} + {rule['right']} : {rule['action']}")
+            for rule  in rules.get(categorie, []):
+             print (f"{rule.get('left','left manquant')}+ {rule.get('right','right manquant')} : {rule.get('action','action manquant')}")
+
         elif categorie == "causal_patterns":
-            for name, data in rules["causal_patterns"].items():
-                keywords_text = ", ".join(data["keywords"])
+         for name, data in rules.get(categorie, {}).items():
+                keywords_text = ", ".join(data.get("keywords", []))
                 print (name)
                 print (f"keywords :  {keywords_text}")
-                print (f"analysis : data['analysis']")
+                print (f"analysis : {data.get('analysis','analysis manquant')}")
+
         elif categorie == "decision_rules":
-            for rule in rules["decision_rules"]:
-                print(f"{rule['left']} + {rule['right']} : {rule['conclusion']}")
+            for rule in rules.get(categorie, []):
+                print(f"{rule.get('left', 'left manquant')} + {rule.get('right', 'right manquant')} : {rule.get('conclusion','action manquante')}")
 
         elif categorie == "memory_rules":
-            for  rule in rules["memory_rules"]:
-                print(f"keywords : {rule['memory_keywords']}")
-                print(f"conclusion : {rule['conclusion']}")
+            for  rule in rules.get(categorie, []):
+                print(f"keywords : {rule.get('memory_keywords', 'memory_keywords manquant')}")
+                print(f"conclusion : {rule.get('conclusion', 'conclusion manquante')}")
         else : 
           print("Affichage détaillé pas encore disponible pour cette catégorie.")  
                    
