@@ -60,9 +60,18 @@ def load_memory():
           donnees = json.load(file)
           return donnees
       
+    except FileNotFoundError as error:
+        print("Fichier introuvable.")
+        print(error)
+        return []
+    
+    except json.JSONDecodeError as error:
+        print("Fichier présent mais JSON mal écrit")
+        print(error)
+        return []
+    
     except Exception as error:
-        print("Mémoire introuvable ou illisible. Nouvelle mémoire créée.")
-
+        print("Erreur imprévue lors du chargement de la mémoire.")
         print(error)
 
         return []
@@ -77,13 +86,22 @@ def load_rules ():
             donnees = json.load(file)
         return donnees
 
-    except Exception as error:
-
-        print("Règles introuvables ou illisibles.")
-
+    except FileNotFoundError as error:
+        print("rules.json introuvable")
         print(error)
-              
         return {}
+    
+    except  json.JSONDecodeError as error:
+        print("rules.json existe, mais son contenu JSON est mal écrit.") 
+        print(error)      
+        return {}
+    
+    except Exception as error:
+        print("Erreur imprévu lors du chargement des règles.")
+        print(error)
+        return {}
+
+
 
 memory = load_memory()
 rules = load_rules()
