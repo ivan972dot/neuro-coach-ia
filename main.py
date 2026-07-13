@@ -60,8 +60,11 @@ def load_memory():
           donnees = json.load(file)
           return donnees
       
-    except:
+    except Exception as error:
         print("Mémoire introuvable ou illisible. Nouvelle mémoire créée.")
+
+        print(error)
+
         return []
 
 
@@ -74,8 +77,12 @@ def load_rules ():
             donnees = json.load(file)
         return donnees
 
-    except:
+    except Exception as error:
+
         print("Règles introuvables ou illisibles.")
+
+        print(error)
+              
         return {}
 
 memory = load_memory()
