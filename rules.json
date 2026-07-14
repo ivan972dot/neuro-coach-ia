@@ -31,40 +31,55 @@
 
 
     
-     "action_rules" : [
+     "action_rules": [
+    {
+        "left": "python",
+        "right": "blocage",
+        "action": "Ouvre ton code, choisis une seule erreur et explique-la en français avant de la corriger."
+    },
+    {
+        "left": "anglais",
+        "right": "blocage",
+        "action": "Écris une phrase simple en anglais sur ton blocage, puis reformule-la une fois."
+    },
+    {
+        "left": "projet",
+        "right": "blocage",
+        "action": "Écris l’objectif du projet en une phrase, puis découpe-le en trois petites étapes."
+    },
+    {
+        "left": "anglais",
+        "right": "fatigue",
+        "action": "Fais cinq minutes d’écoute active, puis répète seulement trois phrases."
+    },
+    {
+        "left": "python",
+        "right": "fatigue",
+        "action": "Choisis une seule fonction et travaille dessus pendant dix minutes maximum."
+    },
+    {
+        "left": "python",
+        "right": "motivation",
+        "action": "Corrige une seule ligne ou ajoute un seul test utile."
+    },
+    {
+        "left": "projet",
+        "right": "motivation",
+        "action": "Choisis la plus petite amélioration visible et termine-la maintenant."
+    }
+],
 
-        {
-            "left": "python",
-            "right":"blocage",
-            "action":"Ouvre ton code, choisis une seule erreur, et explique-la en français avant de la corriger."
-        },
-
-        {
-            "left": "anglais",
-            "right": "blocage",
-            "action": "Écris une phrase simple en anglais sur ton blocage, puis reformule-la une fois."
-        },
-
-        {
-            "left": "projet",
-            "right": "blocage",
-            "action": "Ecris l'objectif du projet en une phrase, puis découpe-le en 3 petites étapes."
-
-        },
-
-        {
-            "left": "python",
-            "right" : "motivation",
-            "action": "Fais une mini-victoire Python en 5 minutes: corrige une seule ligne ou ajoute un seul print utile."
-        }
-
-     ],
-
+       
  
-"memory_rules": [
+  "memory_rules": [
 
-        {
-            "memory_keywords": "problème récurrent : blocage",
+        {   "memory_keywords":"blocage et fatigue",
+            "conclusion":"Réduire la  difficulté, raccourcir la séance et avancer sur une seule petite action"
+
+        },
+
+            
+          {  "memory_keywords": "problème récurrent : blocage",
             "conclusion" : "le blocage revient souvent : on doit ralentir, simplifier et répéter."
         }
     ],
@@ -72,25 +87,42 @@
 
 
 
-  "decision_rules" : [
+  "decision_rules": [
     {
         "left": "python",
         "right": "blocage",
-        "conclusion": "on découpe le problème en petites étapes."
+        "conclusion": "On découpe le problème Python en petites étapes."
     },
-
+    {
+        "left": "anglais",
+        "right": "blocage",
+        "conclusion": "On réduit la difficulté et on travaille une phrase simple."
+    },
+    {
+        "left": "projet",
+        "right": "blocage",
+        "conclusion": "On clarifie l’objectif puis on découpe le projet."
+    },
     {
         "left": "anglais",
         "right": "fatigue",
-        "conclusion": "on fait une séance courte: écoute active + shadowing"
+        "conclusion": "On fait une séance courte d’écoute active et de shadowing."
     },
-
-    
-     {   "left": "python",
+    {
+        "left": "python",
+        "right": "fatigue",
+        "conclusion": "On fait une séance Python courte sur une seule tâche."
+    },
+    {
+        "left": "python",
         "right": "motivation",
-        "conclusion" : "on crée une mini-victoire rapide en Python."
+        "conclusion": "On crée une mini-victoire rapide en Python."
+    },
+    {
+        "left": "projet",
+        "right": "motivation",
+        "conclusion": "On choisit une petite avancée visible sur le projet."
     }
-    
-    ]
+]
 
 }

@@ -58,17 +58,24 @@ def load_memory():
     try:
       with open("memory.json","r", encoding='utf-8') as file:
           donnees = json.load(file)
-          return donnees
+          if not isinstance(donnees,list):
+              return[]
+          
+
+      return donnees
+    
       
     except FileNotFoundError as error:
         print("Fichier introuvable.")
         print(error)
         return []
     
+    
     except json.JSONDecodeError as error:
         print("Fichier présent mais JSON mal écrit")
         print(error)
         return []
+    
     
     except Exception as error:
         print("Erreur imprévue lors du chargement de la mémoire.")
@@ -187,7 +194,7 @@ def memory_agent(user_input, memory):
             if "bloque" in user_message or "blocage" in user_message or "bloqué" in user_message:
                 blocage_count += 1
 
-            if "fatigue" in user_message:
+            if "fatigue" in user_message or "fatigué" in user_message:
                 fatigue_count += 1
 
 
@@ -203,16 +210,19 @@ def memory_agent(user_input, memory):
          dominant_topic = "Aucun sujet dominant" 
 
 
-        if blocage_count > fatigue_count:
+        if blocage_count >= 2 and  fatigue_count >=2:
+            probleme_recurrent = "blocage et fatigue"
+        
+
+        elif blocage_count >= 2 :
             probleme_recurrent = "blocage"
         
 
-        elif fatigue_count > blocage_count :
+        elif fatigue_count >=2 : 
             probleme_recurrent = "fatigue"
-        
 
         else:
-            probleme_recurrent = "aucun sujet dominant"
+            probleme_recurrent = " Aucun problème récurrent"
 
 
 
@@ -239,7 +249,7 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     clean_right = right_analysis.lower().strip()
     clean_memory = memory_analysis.lower().strip()
     conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
-    strategie_long_terme = " Stratégie long terme : aucun shéma récurrent fort détecté pour l'instant."
+    strategie_long_terme = " aucun schéma récurrent fort détecté pour l'instant."
     mini_action = " Choisis une petite action simple et fais-la maintenant"
     action_rules = rules.get("action_rules", [])
     memory_rules = rules.get("memory_rules", [])
@@ -249,16 +259,17 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     for rule in action_rules:
         if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
             mini_action = rule.get("action", "action manquante")
-
+            break
 
     for rule in decision_rules:  
         if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
             conclusion_immediate = rule.get("conclusion", "conclusion manquante")
-
+            break
 
     for rule in memory_rules:
         if rule.get("memory_keywords", "memory_keywords manquante")in clean_memory :
             strategie_long_terme = rule.get("conclusion", "conclusion manquante")
+            break
 
     if debug_mode:
         final_response = f"""
@@ -306,16 +317,34 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
 
 
 def save_memory(user_input,final_response,memory):
-    exchange= {
+
+        exchange= {
      "user": user_input,
         "assistant": final_response
      }
-    memory.append(exchange)
+        memory.append(exchange)
 
-    with open ("memory.json",'w') as file:
-         json.dump(memory,file)
+        try :
+            with open ("memory.json",'w', encoding='utf8') as file:
+                json.dump(memory,file,ensure_ascii=False,indent=4)
 
+                return True
+            
+            
+        except TypeError as error:
+            print(error)
+            return False
+        
+        except FileNotFoundError as error:
+            print(error)
+            return False
+        
+        except Exception as error:
+            print(error)
+            return False
+    
 
+    
 
 def save_backup(memory):
     with open("memory_backup.json",'w', encoding= "utf8") as file:
@@ -598,7 +627,7 @@ def handle_command(clean_input,memory,rules,debug_mode):
 
 
 
-debug_mode = False
+debug_mode = True
 
 while True:
     
