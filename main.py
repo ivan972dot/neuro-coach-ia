@@ -175,67 +175,68 @@ def memory_agent(user_input, memory):
     if memory == []:
         memory_analysis = "Mémoire : aucun historique disponible"
     else:
-        python_count= 0
-        anglais_count = 0
-        blocage_count = 0
-        fatigue_count = 0
-        
+        memory_count ={
+            "python":0 ,
+            "anglais" : 0 ,
+            "fatigue" : 0,
+            "blocage" : 0 
+
+        }
+
+     
+
         for exchange in memory:
             
             user_message = exchange["user"]
             user_message = user_message.lower()
     
             if "python" in user_message:
-                python_count+= 1
+                memory_count["python"]+= 1
 
             if "anglais" in user_message:
-                anglais_count+= 1
+                memory_count["anglais"]+= 1
 
             if "bloque" in user_message or "blocage" in user_message or "bloqué" in user_message:
-                blocage_count += 1
+                memory_count["blocage"] += 1
 
             if "fatigue" in user_message or "fatigué" in user_message:
-                fatigue_count += 1
+                memory_count["fatigue"] += 1
 
 
-        if python_count > anglais_count :
-         dominant_topic ="python"
 
 
-        elif anglais_count > python_count:
-         dominant_topic = "Anglais"
+        sujet_count = {
+           "python": memory_count["python"],
+           "anglais" : memory_count["anglais"]
+    }
 
-
+        if sujet_count["python"] == sujet_count["anglais"]:
+            dominant_topic = "Aucun sujet dominant"
+                
         else:
-         dominant_topic = "Aucun sujet dominant" 
-
-
-        if blocage_count >= 2 and  fatigue_count >=2:
+            dominant_topic = max(sujet_count, key= sujet_count.get)
+                 
+        if memory_count["blocage"]>= 2 and memory_count["fatigue"]>= 2:
             probleme_recurrent = "blocage et fatigue"
+
+        elif  memory_count["blocage"] >= 2 :
+            probleme_recurrent = "blocage "
+
+        elif memory_count["fatigue"]>= 2 :
+             probleme_recurrent = "fatigue"
         
-
-        elif blocage_count >= 2 :
-            probleme_recurrent = "blocage"
-        
-
-        elif fatigue_count >=2 : 
-            probleme_recurrent = "fatigue"
-
         else:
-            probleme_recurrent = " Aucun problème récurrent"
+             probleme_recurrent = " Aucun problème récurrent"
+
+      
 
 
 
 
 
 
-
-
-
-
-
-        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {python_count} fois. Anglais revient {anglais_count} fois . Blocage revient {blocage_count} fois. Fatigue revient {fatigue_count} fois. Sujet dominant : {dominant_topic} . Problème récurrent : {probleme_recurrent}."
-
+        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {memory_count['python']} fois. Anglais revient {memory_count['anglais']} fois . Blocage revient {memory_count['blocage']} fois. Fatigue revient {memory_count['fatigue']} fois. Sujet dominant : {dominant_topic} . Problème récurrent : {probleme_recurrent}."
+         
     return memory_analysis
 
 
@@ -627,7 +628,7 @@ def handle_command(clean_input,memory,rules,debug_mode):
 
 
 
-debug_mode = True
+debug_mode = False
 
 while True:
     
