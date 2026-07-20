@@ -156,19 +156,20 @@ def right_agent(user_input):
 
     causal_patterns = rules.get("causal_patterns", {})
     
-    analysis = "Analyse causale générale : aucune cause précise détectée."
-
+    analysis = []
     for _ , data in causal_patterns.items():
 
         keywords = data["keywords"]
 
-        category_analysis = data["analysis"]
+        category_analysis = data["analysis" ]
 
         if any (keyword in clean_input for keyword in keywords):
-            analysis = category_analysis
-
-    return analysis
+            analysis.append(category_analysis)
     
+    if analysis ==[]: 
+            return "analyse generale"
+    else:
+     return "\n".join(analysis)  
     
 def memory_agent(user_input, memory):
     
@@ -185,6 +186,16 @@ def memory_agent(user_input, memory):
 
      
 
+        keyword_by_category = {
+
+            "fatigue": ["fatigué","fatigue"],
+           "blocage" : ["bloqué","blocage","bloque"] 
+        
+        }
+           
+        
+   
+
         for exchange in memory:
             
             user_message = exchange["user"]
@@ -196,11 +207,18 @@ def memory_agent(user_input, memory):
             if "anglais" in user_message:
                 memory_count["anglais"]+= 1
 
-            if "bloque" in user_message or "blocage" in user_message or "bloqué" in user_message:
-                memory_count["blocage"] += 1
 
-            if "fatigue" in user_message or "fatigué" in user_message:
-                memory_count["fatigue"] += 1
+            for categorie,liste_keywords in keyword_by_category.items():
+             for keyword in liste_keywords: 
+                    if keyword in user_message:
+                     memory_count[categorie] += 1
+                     break
+                    
+
+
+
+
+    
 
 
 
@@ -255,14 +273,25 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     action_rules = rules.get("action_rules", [])
     memory_rules = rules.get("memory_rules", [])
     decision_rules = rules.get("decision_rules", [])
+    required_right_keyword = ["blocage","fatigue"]
+
+          
+    if  all(keyword in clean_right for keyword in required_right_keyword):
+             conclusion_immediate = "réduire l'effort et récuperer avant de reprendre."
+             mini_action = "faire une courte pause ou une sieste, puis reprendre une seule petite étape." 
+
+
+    else :
+
+
    
 
-    for rule in action_rules:
+     for rule in action_rules:
         if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
             mini_action = rule.get("action", "action manquante")
             break
 
-    for rule in decision_rules:  
+     for rule in decision_rules:  
         if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
             conclusion_immediate = rule.get("conclusion", "conclusion manquante")
             break
@@ -628,7 +657,7 @@ def handle_command(clean_input,memory,rules,debug_mode):
 
 
 
-debug_mode = False
+debug_mode = True
 
 while True:
     
