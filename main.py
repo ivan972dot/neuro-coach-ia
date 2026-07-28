@@ -170,6 +170,8 @@ def right_agent(user_input):
             return "analyse generale"
     else:
      return "\n".join(analysis)  
+
+    
     
 def memory_agent(user_input, memory):
     
@@ -207,19 +209,26 @@ def memory_agent(user_input, memory):
             if "anglais" in user_message:
                 memory_count["anglais"]+= 1
 
-
-            for categorie,liste_keywords in keyword_by_category.items():
-             for keyword in liste_keywords: 
-                    if keyword in user_message:
-                     memory_count[categorie] += 1
-                     break
-                    
-
-
-
-
     
+            for categorie,liste_keywords in keyword_by_category.items():
+                if any (keyword in user_message for keyword in liste_keywords): 
+                     memory_count[categorie] += 1
 
+
+
+        current_message = user_input.lower()
+        if "python" in current_message:
+            memory_count["python"]+= 1
+
+        if "anglais" in current_message:
+            memory_count["anglais"]+= 1
+
+        for categorie,liste_keywords in keyword_by_category.items():
+                          if any (keyword in current_message for keyword in liste_keywords): 
+                               memory_count[categorie] += 1  
+
+                     
+                    
 
 
 
@@ -273,33 +282,43 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug
     action_rules = rules.get("action_rules", [])
     memory_rules = rules.get("memory_rules", [])
     decision_rules = rules.get("decision_rules", [])
-    required_right_keyword = ["blocage","fatigue"]
-
-          
-    if  all(keyword in clean_right for keyword in required_right_keyword):
-             conclusion_immediate = "réduire l'effort et récuperer avant de reprendre."
-             mini_action = "faire une courte pause ou une sieste, puis reprendre une seule petite étape." 
+    priority_rules = rules.get("priority_rules", [])
+    priority_found= False
 
 
-    else :
+    for rule in priority_rules:
+            required_right_keyword = rule.get("right_all", [] )
+    
+            if required_right_keyword and all(keyword in clean_right for keyword in required_right_keyword):
+                 conclusion_immediate = rule.get("conclusion")
+                 mini_action = rule.get("action")
+                 priority_found = True
+                 break  
 
 
-   
 
-     for rule in action_rules:
-        if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
-            mini_action = rule.get("action", "action manquante")
-            break
+            if not priority_found :
 
-     for rule in decision_rules:  
-        if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
-            conclusion_immediate = rule.get("conclusion", "conclusion manquante")
-            break
+
+                for rule in action_rules:
+                    if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
+                         mini_action = rule.get("action", "action manquante")
+                         break
+
+
+                for rule in decision_rules:  
+                     if rule.get("left", "left manquant") in clean_left and rule.get("right", "right manquant") in clean_right:
+                        conclusion_immediate = rule.get("conclusion", "conclusion manquante")
+                        break
+
 
     for rule in memory_rules:
         if rule.get("memory_keywords", "memory_keywords manquante")in clean_memory :
             strategie_long_terme = rule.get("conclusion", "conclusion manquante")
             break
+
+
+
 
     if debug_mode:
         final_response = f"""
