@@ -175,9 +175,6 @@ def right_agent(user_input):
     
 def memory_agent(user_input, memory):
     
-    if memory == []:
-        memory_analysis = "Mémoire : aucun historique disponible"
-    else:
         memory_count ={
             "python":0 ,
             "anglais" : 0 ,
@@ -185,8 +182,6 @@ def memory_agent(user_input, memory):
             "blocage" : 0 
 
         }
-
-     
 
         keyword_by_category = {
 
@@ -196,8 +191,6 @@ def memory_agent(user_input, memory):
         }
            
         
-   
-
         for exchange in memory:
             
             user_message = exchange["user"]
@@ -214,8 +207,6 @@ def memory_agent(user_input, memory):
                 if any (keyword in user_message for keyword in liste_keywords): 
                      memory_count[categorie] += 1
 
-
-
         current_message = user_input.lower()
         if "python" in current_message:
             memory_count["python"]+= 1
@@ -228,10 +219,6 @@ def memory_agent(user_input, memory):
                                memory_count[categorie] += 1  
 
                      
-                    
-
-
-
         sujet_count = {
            "python": memory_count["python"],
            "anglais" : memory_count["anglais"]
@@ -255,16 +242,10 @@ def memory_agent(user_input, memory):
         else:
              probleme_recurrent = " Aucun problème récurrent"
 
-      
-
-
-
-
-
 
         memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {memory_count['python']} fois. Anglais revient {memory_count['anglais']} fois . Blocage revient {memory_count['blocage']} fois. Fatigue revient {memory_count['fatigue']} fois. Sujet dominant : {dominant_topic} . Problème récurrent : {probleme_recurrent}."
          
-    return memory_analysis
+        return memory_analysis
 
 
 
