@@ -381,14 +381,17 @@ def save_memory(user_input,final_response,memory):
             
             
         except TypeError as error:
+            memory.pop()
             print(error)
             return False
         
         except FileNotFoundError as error:
+            memory.pop()
             print(error)
             return False
         
         except Exception as error:
+            memory.pop()
             print(error)
             return False
     
@@ -700,7 +703,9 @@ while True:
     final_response= central_agent(user_input,left_analysis,right_analysis,memory_analysis,debug_mode)
 
     print(final_response)
-    save_memory(user_input,final_response,memory)
+    memory_result = save_memory(user_input,final_response,memory)
+    if  not memory_result :
+        print("l'échange n'a pas pu étre  sauvegardé")
 
 
 
