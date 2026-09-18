@@ -171,17 +171,35 @@ def right_agent(user_input):
     else:
      return "\n".join(analysis)  
 
-    
+
+def confidence(nombre_observation):
+    if nombre_observation <= 0:
+        return "invalide"
+    elif nombre_observation <= 2:
+        return "faible"
+    elif nombre_observation <= 5:
+        return "moyenne"
+    else:
+        return "élevée"
+
+
+
+
     
 def memory_agent(user_input, memory):
-    
+
+       
+
         memory_count ={
             "python":0 ,
             "anglais" : 0 ,
             "fatigue" : 0,
-            "blocage" : 0 
+            "blocage" : 0 ,
+            "blocage_fatigue": 0
 
         }
+        
+     
 
         keyword_by_category = {
 
@@ -207,6 +225,15 @@ def memory_agent(user_input, memory):
                 if any (keyword in user_message for keyword in liste_keywords): 
                      memory_count[categorie] += 1
 
+
+        fatigue_present = any( keyword in user_message for keyword in keyword_by_category["fatigue"])
+
+        blocage_present = any(keyword in user_message for keyword in keyword_by_category["blocage"])
+
+        if fatigue_present and blocage_present:
+          memory_count["blocage_fatigue"]+=1
+
+
         current_message = user_input.lower()
         if "python" in current_message:
             memory_count["python"]+= 1
@@ -214,10 +241,20 @@ def memory_agent(user_input, memory):
         if "anglais" in current_message:
             memory_count["anglais"]+= 1
 
-        for categorie,liste_keywords in keyword_by_category.items():
-                          if any (keyword in current_message for keyword in liste_keywords): 
-                               memory_count[categorie] += 1  
+        fatigue_current = any(keyword in current_message for keyword in keyword_by_category["fatigue"])
 
+        blocage_current = any(keyword in current_message for keyword in keyword_by_category["blocage"])
+
+        if fatigue_current: 
+            memory_count["fatigue"]+=1
+
+        if blocage_current:
+            memory_count["blocage"]+=1
+
+        if fatigue_current and blocage_current:
+            memory_count["blocage_fatigue"]+=1
+
+        
                      
         sujet_count = {
            "python": memory_count["python"],
@@ -233,6 +270,7 @@ def memory_agent(user_input, memory):
         if memory_count["blocage"]>= 2 and memory_count["fatigue"]>= 2:
             probleme_recurrent = "blocage et fatigue"
 
+       
         elif  memory_count["blocage"] >= 2 :
             probleme_recurrent = "blocage "
 
@@ -242,8 +280,27 @@ def memory_agent(user_input, memory):
         else:
              probleme_recurrent = " Aucun problème récurrent"
 
+        if probleme_recurrent == "blocage et fatigue":
+                     nombre_observation = memory_count["blocage_fatigue"]
 
-        memory_analysis = f"il existe déjà {len(memory)} échanges enregistrés. Python revient {memory_count['python']} fois. Anglais revient {memory_count['anglais']} fois . Blocage revient {memory_count['blocage']} fois. Fatigue revient {memory_count['fatigue']} fois. Sujet dominant : {dominant_topic} . Problème récurrent : {probleme_recurrent}."
+        elif probleme_recurrent == "blocage":
+            nombre_observation = memory_count["blocage"]
+
+        elif probleme_recurrent == "fatigue":
+            nombre_observation = memory_count["fatigue"]
+        else :
+            nombre_observation = 0
+
+        if nombre_observation == 0:
+            niveau_confidence = "aucune"
+
+        else:
+            niveau_confidence = confidence(nombre_observation)
+ 
+
+        memory_analysis = f"Il existe déjà {len(memory)} échanges enregistrés. Python revient {memory_count['python']} fois. Anglais revient {memory_count['anglais']} fois. Blocage revient {memory_count['blocage']} fois. Fatigue revient {memory_count['fatigue']} fois. Blocage et fatigue apparaissent ensemble {memory_count['blocage_fatigue']} fois. Sujet dominant : {dominant_topic}. Problème récurrent : {probleme_recurrent}. Nombre d'observations utilisées : {nombre_observation}. Niveau de confiance : {niveau_confidence}."
+    
+
          
         return memory_analysis
 
