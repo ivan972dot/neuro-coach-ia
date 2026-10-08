@@ -157,19 +157,21 @@ def right_agent(user_input):
     causal_patterns = rules.get("causal_patterns", {})
     
     analysis = []
-    for _ , data in causal_patterns.items():
+
+    for category , data  in causal_patterns.items():
 
         keywords = data["keywords"]
 
         category_analysis = data["analysis" ]
-
+        
         if any (keyword in clean_input for keyword in keywords):
             analysis.append(category_analysis)
+             
     
-    if analysis ==[]: 
+    if analysis ==[]:  
             return "analyse generale"
     else:
-     return "\n".join(analysis)  
+     return "\n".join(analysis),category  
 
 
 def confidence(nombre_observation):
@@ -305,18 +307,39 @@ def memory_agent(user_input, memory):
         return memory_analysis
 
 
+def coaching_agent(user_block,user_available_time):
+
+    solutions=[]
+
+    if "fatigue" in user_block and user_available_time <=20:
+         solutions = [ 
+               f" Fais une session de {user_available_time} minutes.",
+               "Revois les notions précédentes.",
+               "Repose-toi quelque minutes avant de démarrer une session."]
+
+
+    elif "fatigue" in user_block and user_available_time> 20:
+        rest_time = user_available_time // 3
+        work_time = user_available_time - rest_time
+        solutions.append(f"Repose toi {rest_time} et travaille {work_time} ")
+
+    elif "procrastination" in user_block:
+        solutions.append("commence par une petite action maintenant")
+    
+    return solutions
 
 
 
-
-def central_agent(user_input,left_analysis,right_analysis,memory_analysis, debug_mode):
+def central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions, debug_mode):
 
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
     clean_memory = memory_analysis.lower().strip()
     conclusion_immediate = "Conclusion immédiate : je  propose une action adaptée au message actuel"
     strategie_long_terme = " aucun schéma récurrent fort détecté pour l'instant."
-    mini_action = " Choisis une petite action simple et fais-la maintenant"
+    mini_action = "Choisis une petite action simple et fais-la maintenant"
+    if coaching_solutions:
+        mini_action = coaching_solutions[0]
     action_rules = rules.get("action_rules", [])
     memory_rules = rules.get("memory_rules", [])
     decision_rules = rules.get("decision_rules", [])
@@ -719,6 +742,7 @@ def handle_command(clean_input,memory,rules,debug_mode):
 
 debug_mode = True
 
+
 while True:
     
     user_input= input("YOU:  " )
@@ -733,12 +757,41 @@ while True:
      continue
 
     
+     
+
+    left_analysis = left_agent(user_input)
+    right_analysis, category = right_agent(user_input)
+    user_available_time = int(input("Combien de temps as-tu de disponible ? "))
+    coaching_solutions = coaching_agent(category, user_available_time)
+    memory_analysis = memory_agent(user_input, memory)
+    final_response = central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions,debug_mode)
+
+    if category == "procrastination":
+
+        if user_available_time>= 5:
+            input("Appui sur entrée quand tu as fini tes 5 minutes.")
+            user_task = input("Qu'as-tu accompli pendant ces 5 minutes?")
+            user_continue = input("Veux tu continuer ? oui/non :  ")
+
+            if "oui" in user_continue:
+                remaining_time = user_available_time - 5
+
+            if remaining_time>=20:
+                print("Travail pendant 20 minutes.")
+                input("Appui sur entrée quand tu as terminé.")
+                user_accomplish = input("Qu'as-tu fait pendant ces 20 minutes.")
+
+            else:
+                print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
+                input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
+                user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
+
+        else:
+            print(f" Tu as {user_available_time} minutes disponible. Utilise ces {user_available_time} minutes.")
+            input("Appuie sur entrée quand tu as terminé.")
+            user_accomplish = input (f"Qu'as-tu accompli pendant ces {user_available_time} minutes")
 
 
-    left_analysis= left_agent(user_input)
-    right_analysis= right_agent(user_input)
-    memory_analysis= memory_agent(user_input, memory)
-    final_response= central_agent(user_input,left_analysis,right_analysis,memory_analysis,debug_mode)
 
     print(final_response)
     memory_result = save_memory(user_input,final_response,memory)
