@@ -806,8 +806,10 @@ while True:
             user_accomplish = input (f"Qu'as-tu accompli pendant ces {user_available_time} minutes")
 
 
+    final_response += f"\nBilan de ta session : {total_work_time} minutes"
 
     print(final_response)
+    
     memory_result = save_memory(user_input,final_response,memory)
     if  not memory_result :
         print("l'échange n'a pas pu étre  sauvegardé")
