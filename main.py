@@ -766,29 +766,43 @@ while True:
     memory_analysis = memory_agent(user_input, memory)
     final_response = central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions,debug_mode)
 
+    total_work_time = 0
+    user_task = ""
+    user_accomplish = ""
+
     if category == "procrastination":
 
         if user_available_time>= 5:
             input("Appui sur entrée quand tu as fini tes 5 minutes.")
             user_task = input("Qu'as-tu accompli pendant ces 5 minutes?")
+            total_work_time+= 5
             user_continue = input("Veux tu continuer ? oui/non :  ")
 
-            if "oui" in user_continue:
+            if user_continue.strip().lower() == "oui" :
                 remaining_time = user_available_time - 5
 
-            if remaining_time>=20:
-                print("Travail pendant 20 minutes.")
-                input("Appui sur entrée quand tu as terminé.")
-                user_accomplish = input("Qu'as-tu fait pendant ces 20 minutes.")
+                if remaining_time>=20:
+                 print("Travail pendant 20 minutes.")
+                 input("Appui sur entrée quand tu as terminé.")
+                 total_work_time+=20
+                 user_accomplish = input("Qu'as-tu fait pendant ces 20 minutes.")
 
-            else:
-                print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
-                input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
-                user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
+
+                elif remaining_time<=0:
+                    print("Pas de session à proposer")
+
+
+
+                else:
+                 print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
+                 input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
+                 total_work_time+= remaining_time
+                 user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
 
         else:
             print(f" Tu as {user_available_time} minutes disponible. Utilise ces {user_available_time} minutes.")
             input("Appuie sur entrée quand tu as terminé.")
+            total_work_time+= user_available_time
             user_accomplish = input (f"Qu'as-tu accompli pendant ces {user_available_time} minutes")
 
 
