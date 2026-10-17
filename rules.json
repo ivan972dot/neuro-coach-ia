@@ -1,5 +1,5 @@
- { 
-    "causal_patterns":{
+  {
+    "causal_patterns": {
 
         "blocage" :{
             "keywords":["bloque","difficulté","comprend pas","blocage", "bloqué" ],
@@ -21,13 +21,18 @@
             "analysis":"Le stress peut venir d'une surcharge mentale ou d'une pression forte."
 
         },
+
         "peur" :{
             "keywords": ["peur","échouer", "pas confiance" ],
             "analysis":"La peur peut venir de la crainte de l'échec ou du jugement."
-        }
-    },
+        },
 
- 
+        "procrastination":{
+            "keywords":["procrastine","flemme","procrastination","repousse" ],
+            "analysis" : "La procrastination peux venir d'une mauvaise planification de taches a faire."
+    }
+
+},
 
 
     
@@ -123,6 +128,45 @@
         "right": "motivation",
         "conclusion": "On choisit une petite avancée visible sur le projet."
     }
-]
+],
+
+    "priority_rules":[
+        {
+            "right_all": ["blocage", "fatigue"],
+            "conclusion":" Réduire l'effort et récupérer avant de reprendre.",
+            "action":" Faire une courte pause ou une sieste, puis reprendre une seule petite étape."
+        },
+
+
+        {
+            "right_all":["fatigue", "motivation"],
+            "conclusion": " Réduire l'objectif pour retrouver de l'énergie et une petite victoire.",
+            "action": " choisir une tâche trés courte et facile à terminer"
+        }
+    ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

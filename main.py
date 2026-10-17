@@ -330,7 +330,7 @@ def coaching_agent(user_block,user_available_time):
 
 
 
-def central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions, debug_mode):
+def central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions,total_work_time, debug_mode):
 
     clean_left = left_analysis.lower().strip()
     clean_right = right_analysis.lower().strip()
@@ -379,6 +379,12 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis,coachi
             break
 
 
+    if total_work_time> 0:
+        mini_action = "Mission accomplie !"
+        titre_action = "Résultat de ta mission"
+
+    else:
+        titre_action = "Mini_action maintenant"
 
 
     if debug_mode:
@@ -403,10 +409,10 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis,coachi
     Stratégie long terme :
     {strategie_long_terme}
 
-    Mini-action maintenant :
-    {mini_action}
+    {titre_action }:
+     {mini_action}
 
-   
+    
     """
     else:
         final_response = f""" Je comprends ta situation
@@ -417,8 +423,9 @@ def central_agent(user_input,left_analysis,right_analysis,memory_analysis,coachi
         Stratégie long terme : 
         {strategie_long_terme}
 
-        Mini_action maintenant :
+        {titre_action }:
         {mini_action}
+        
         
         """
     
@@ -764,7 +771,7 @@ while True:
     user_available_time = int(input("Combien de temps as-tu de disponible ? "))
     coaching_solutions = coaching_agent(category, user_available_time)
     memory_analysis = memory_agent(user_input, memory)
-    final_response = central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions,debug_mode)
+    
 
     total_work_time = 0
     user_task = ""
@@ -779,7 +786,10 @@ while True:
             user_continue = input("Veux tu continuer ? oui/non :  ")
 
             if user_continue.strip().lower() == "oui" :
+
                 remaining_time = user_available_time - 5
+             
+
 
                 if remaining_time>=20:
                  print("Travail pendant 20 minutes.")
@@ -787,30 +797,42 @@ while True:
                  total_work_time+=20
                  user_accomplish = input("Qu'as-tu fait pendant ces 20 minutes.")
 
-
-                elif remaining_time<=0:
-                    print("Pas de session à proposer")
-
-
-
+                elif remaining_time<= 0:
+                                   print("Pas de session à proposer")
+               
                 else:
-                 print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
-                 input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
-                 total_work_time+= remaining_time
-                 user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
+                                print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
+                                input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
+                                total_work_time+= remaining_time
+                                user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
 
-        else:
+
+
+        elif user_available_time > 0 and user_available_time < 5:
+            print("Session courte")
+
+        else: 
+            print("Aucune session")
+
+
+           
+    else:
             print(f" Tu as {user_available_time} minutes disponible. Utilise ces {user_available_time} minutes.")
             input("Appuie sur entrée quand tu as terminé.")
             total_work_time+= user_available_time
             user_accomplish = input (f"Qu'as-tu accompli pendant ces {user_available_time} minutes")
 
 
+
+
+    final_response = central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions,total_work_time,debug_mode)
+
     final_response += f"\nBilan de ta session : {total_work_time} minutes\nPremière action: {user_task}"
 
     if user_accomplish:
         final_response+= f"\nDeuxième action {user_accomplish}"
 
+    
     print(final_response)
 
     memory_result = save_memory(user_input,final_response,memory)
