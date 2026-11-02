@@ -169,7 +169,7 @@ def right_agent(user_input):
              
     
     if analysis ==[]:  
-            return "analyse generale"
+     return "analyse generale", "generale"
     else:
      return "\n".join(analysis),category  
 
@@ -787,49 +787,46 @@ while True:
 
             if user_continue.strip().lower() == "oui" :
 
-                remaining_time = user_available_time - 5
+             remaining_time = user_available_time - 5
              
 
 
-                if remaining_time>=20:
-                 print("Travail pendant 20 minutes.")
-                 input("Appui sur entrée quand tu as terminé.")
-                 total_work_time+=20
-                 user_accomplish = input("Qu'as-tu fait pendant ces 20 minutes.")
+             if remaining_time>=20:
+               print("Travail pendant 20 minutes.")
+               input("Appui sur entrée quand tu as terminé.")
+               total_work_time+=20
+               user_accomplish = input("Qu'as-tu fait pendant ces 20 minutes.")
 
-                elif remaining_time<= 0:
-                                   print("Pas de session à proposer")
+             elif remaining_time<= 0:
+               print("Pas de session à proposer")
                
-                else:
-                                print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
-                                input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
-                                total_work_time+= remaining_time
-                                user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
+             else:
+              print(f"Travaille pendant les {remaining_time}  minutes  restantes.")
+              input(f"Appuie sur entrée quand tu as fini tes {remaining_time} minutes .")
+              total_work_time+= remaining_time
+              user_accomplish= input(f"Qu'as-tu accompli pendant {remaining_time} minutes ?")
 
 
 
         elif user_available_time > 0 and user_available_time < 5:
             print("Session courte")
+            input("Appuie sur entée quand tu as terminé.")
+            total_work_time+= user_available_time
+            user_task = input("Qu'as-tu accompli ,? ")
 
         else: 
             print("Aucune session")
 
 
-           
-    else:
-            print(f" Tu as {user_available_time} minutes disponible. Utilise ces {user_available_time} minutes.")
-            input("Appuie sur entrée quand tu as terminé.")
-            total_work_time+= user_available_time
-            user_accomplish = input (f"Qu'as-tu accompli pendant ces {user_available_time} minutes")
-
-
-
-
+    
     final_response = central_agent(user_input,left_analysis,right_analysis,memory_analysis,coaching_solutions,total_work_time,debug_mode)
 
-    final_response += f"\nBilan de ta session : {total_work_time} minutes\nPremière action: {user_task}"
 
-    if user_accomplish:
+    if total_work_time > 0:
+
+     final_response += f"\nBilan de ta session : {total_work_time} minutes\nPremière action: {user_task}"
+
+     if user_accomplish:
         final_response+= f"\nDeuxième action {user_accomplish}"
 
     
